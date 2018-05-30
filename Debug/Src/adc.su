@@ -1,0 +1,5 @@
+adc.c:64:6:MX_ADC1_Init	24	static
+adc.c:99:6:MX_ADC2_Init	24	static
+adc.c:134:6:MX_ADC3_Init	24	static
+adc.c:169:6:HAL_ADC_MspInit	40	static
+adc.c:235:6:HAL_ADC_MspDeInit	0	static
