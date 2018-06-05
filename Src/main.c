@@ -121,6 +121,7 @@ int main(void)
   //MX_ADC3_Init();
   //MX_TIM5_Init();
   //MX_TIM2_Init();
+
   /* USER CODE BEGIN 2 */
   unsigned int red_mask = 3;
   unsigned int green_mask = 6;
@@ -128,12 +129,9 @@ int main(void)
   unsigned int status_mask = 1;
 
 
-  unsigned int segment_counter = 0;
-  unsigned int segment_map = 0;
-  unsigned int temp = 0;
 
 
-
+  setVFO(14060000);
 
 
   HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_RESET);
@@ -198,8 +196,6 @@ int main(void)
   /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
 
-
-
   /* Start scheduler */
   osKernelStart();
   
@@ -263,8 +259,6 @@ void SystemClock_Config(void)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
-
-  HAL_RCC_MCOConfig(RCC_MCO1, RCC_MCO1SOURCE_PLLCLK, RCC_MCODIV_1);
 
     /**Configure the Systick interrupt time 
     */

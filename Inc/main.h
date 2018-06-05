@@ -60,6 +60,15 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define DDS_CLK_Pin GPIO_PIN_8
+#define DDS_CLK_GPIO_Port GPIOA
+#define DDS_RESET_Pin GPIO_PIN_15
+#define DDS_RESET_GPIO_Port GPIOA
+#define DDS_DATA_Pin GPIO_PIN_4
+#define DDS_DATA_GPIO_Port GPIOB
+#define DDS_FQ_UD_Pin GPIO_PIN_5
+#define DDS_FQ_UD_GPIO_Port GPIOB
+
 /* ########################## Assert Selection ############################## */
 /**
   * @brief Uncomment the line below to expanse the "assert_param" macro in the 

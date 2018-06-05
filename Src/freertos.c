@@ -50,7 +50,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "cmsis_os.h"
-#include "display.h"
 
 /* USER CODE BEGIN Includes */     
 
@@ -99,8 +98,7 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  osThreadDef(displayTask, StartDisplayTask, osPriorityNormal, 0, 1024);
-  displayTaskHandle = osThreadCreate(osThread(displayTask), NULL);
+
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
