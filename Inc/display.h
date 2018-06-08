@@ -5,12 +5,10 @@
  extern "C" {
 #endif
 
-osThreadId displayTaskHandle;
-void StartDisplayTask(void const * argument);
-void updateRgDisplay(unsigned int red_mask, unsigned int green_mask);
+void updateRgDisplay(uint32_t red_mask, uint32_t green_mask);
 void updateStatusDisplay(unsigned int status_mask);
-void updateCharacterDisplay(unsigned int display_val);
-unsigned char getDigitFromInt(unsigned int display_val, unsigned char pos);
+void updateCharacterDisplay(uint32_t display_val);
+unsigned char getDigitFromInt(uint32_t display_val, unsigned char pos);
 unsigned char getDigitMask(unsigned char digit);
 
 #ifdef __cplusplus

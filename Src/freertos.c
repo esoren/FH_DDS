@@ -59,7 +59,7 @@
 osThreadId defaultTaskHandle;
 
 /* USER CODE BEGIN Variables */
-
+osThreadId displayTaskHandle;
 /* USER CODE END Variables */
 
 /* Function prototypes -------------------------------------------------------*/
@@ -68,6 +68,7 @@ void StartDefaultTask(void const * argument);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* USER CODE BEGIN FunctionPrototypes */
+void StartDisplayTask(void const * argument);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -94,11 +95,12 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityLow, 0, 128);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
-
+  osThreadDef(displayTask, StartDisplayTask, osPriorityNormal, 0, 128);
+  displayTaskHandle = osThreadCreate(osThread(displayTask), NULL);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
@@ -120,7 +122,6 @@ void StartDefaultTask(void const * argument)
 }
 
 /* USER CODE BEGIN Application */
-     
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

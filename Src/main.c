@@ -56,6 +56,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include "globals.h"
 
 /* USER CODE BEGIN Includes */
 #include "display.h"
@@ -123,68 +124,23 @@ int main(void)
   //MX_TIM2_Init();
 
   /* USER CODE BEGIN 2 */
-  unsigned int red_mask = 3;
-  unsigned int green_mask = 6;
-  unsigned int count = 0;
-  unsigned int status_mask = 1;
 
 
 
 
-  setVFO(14060000);
+  //setVFO(freq);
+  RED_MASK = 0x555555;
+  GREEN_MASK = 0xAAAAAA;
+  SEGMENT_DISP = 123456;
+  STATUS_MASK = 0x01 << 7;
 
 
-  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);
 
 
-  unsigned int display_val = 0;
-
-  while(1==1)
-  {
-	  count = (count + 1) % 10000; //ms count
-
-	  //Update numeric display every 10ms
-	  if( (count % 10) == 0) {
-		  display_val = (display_val + 1) % 999999;
-	  }
-
-	  //Update RG leds every 25ms
-	  if((count % 25) == 0) {
-
-	  		  red_mask <<= 1;
-	  		  if(red_mask >> 20 & 0x01) {
-	  			  red_mask = red_mask | 0x01;
-	  			  red_mask = red_mask & 0b011111111111111111111;
-	  		  }
-
-	  		  green_mask <<= 1;
-	  		  if(green_mask >> 20 & 0x01) {
-	  			  green_mask = green_mask | 0x01;
-	  			  green_mask = green_mask & 0b011111111111111111111;
-	  		  }
-	  	  }
-
-	  //Update status display
-	  if( (count % 1000) ==  0 ) {
-
-	  		  status_mask <<= 1;
-	  		  if(status_mask >> 8 & 0x01) {
-	  			  status_mask = status_mask | 0x01;
-	  			  status_mask = status_mask & 0x0FF;
-	  		  }
-	  	  }
-
-	  if( (count % 1) == 0) {
-		  updateStatusDisplay(status_mask);
-		  updateRgDisplay(red_mask, green_mask);
-		  updateCharacterDisplay(display_val);
-	  }
-	  HAL_Delay(1);
 
 
-  }
+
+
 
 
 

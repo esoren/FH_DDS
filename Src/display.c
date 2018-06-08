@@ -4,6 +4,7 @@
 #include "task.h"
 #include "cmsis_os.h"
 #include "display.h"
+#include "globals.h"
 
 /*
 0        0b11110011
@@ -18,8 +19,25 @@
 9        0b11100110
 */
 
+void StartDisplayTask(void const * argument)
+{
 
-void updateCharacterDisplay(unsigned int display_val)
+  /* Infinite loop */
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);
+
+for(;;)
+  {
+	  updateStatusDisplay(STATUS_MASK);
+	  updateRgDisplay(RED_MASK, GREEN_MASK);
+	  updateCharacterDisplay(SEGMENT_DISP);
+	  osDelay(1);
+  }
+}
+
+
+void updateCharacterDisplay(uint32_t display_val)
 {
 	static unsigned char current_digit = 0;
 	unsigned char digit = 0;
@@ -88,7 +106,7 @@ void updateCharacterDisplay(unsigned int display_val)
 	return;
 }
 
-unsigned char getDigitFromInt(unsigned int display_val, unsigned char pos)
+unsigned char getDigitFromInt(uint32_t display_val, unsigned char pos)
 {
 
 	unsigned char digit = 0;
@@ -149,7 +167,7 @@ unsigned char getDigitMask(unsigned char digit)
 	return digit_mask;
 }
 
-void updateRgDisplay(unsigned int red_mask, unsigned int green_mask)
+void updateRgDisplay(uint32_t red_mask, uint32_t green_mask)
 {
 	static unsigned char bank = 0;
 
@@ -282,6 +300,15 @@ void updateRgDisplay(unsigned int red_mask, unsigned int green_mask)
 }
 
 
+//0: 5
+//1: 1
+//2: 7
+//3: 2
+//4: 3
+//5: 4
+//6: 6
+//7: 0
+
 void updateStatusDisplay(unsigned int status_mask)
 {
 	unsigned static char led = 0;
@@ -349,25 +376,8 @@ void updateStatusDisplay(unsigned int status_mask)
 	return;
 }
 
-/*
-1
-8
-2
-3
-4
-7
-6
-*/
-
-void StartDisplayTask(void const * argument) {
 
 
-
-
-
-	osDelay(500);
-
-}
 
 
 

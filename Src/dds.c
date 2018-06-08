@@ -32,7 +32,9 @@ void setVFO(uint32_t freq) {
 	asm("NOP");
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
 
-	bitfreq = 4294967296/DDS_CLK;
+	bitfreq = 4393432703/DDS_CLK;   //4294967296 TODO: this should be based on a calibration routine
+
+
 	bitfreq *= freq;
 	config = (uint32_t)bitfreq;
 
