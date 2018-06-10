@@ -125,26 +125,7 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 
-
-
-
   //setVFO(freq);
-  RED_MASK = 0x555555;
-  GREEN_MASK = 0xAAAAAA;
-  SEGMENT_DISP = 123456;
-  STATUS_MASK = 0x01 << 7;
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   /* USER CODE END 2 */

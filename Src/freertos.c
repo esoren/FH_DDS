@@ -52,7 +52,8 @@
 #include "cmsis_os.h"
 
 /* USER CODE BEGIN Includes */     
-
+#include "globals.h"
+#include "display.h"
 /* USER CODE END Includes */
 
 /* Variables -----------------------------------------------------------------*/
@@ -104,7 +105,7 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
+  xDisplayQueue = xQueueCreate(10, sizeof(displayMessage_t) );
   /* USER CODE END RTOS_QUEUES */
 }
 
@@ -113,10 +114,49 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN StartDefaultTask */
+  uint32_t count = 0;
+  uint32_t displayVal = 0;
+  uint32_t greenMask = 1;
+  displayMessage_t displayMessage;
+  BaseType_t xStatus;
+
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	count++;
+
+	if((count % 10) == 0) {
+		displayVal = displayVal + 1;
+		if(displayVal > 999999)
+			displayVal = 0;
+
+		displayMessage.displayDestination = DIGIT_DISPLAY;
+		displayMessage.val = displayVal;
+
+		xStatus = xQueueSendToBack( xDisplayQueue, &displayMessage, 0);
+		if (xStatus != pdPASS) {
+			//todo: add an assert or wait
+		}
+
+	}
+
+	if((count % 100) == 0) {
+			greenMask <<= 1;
+			if((greenMask >> 20) > 0 )
+				greenMask = 1;
+
+			displayMessage.displayDestination = GREEN_DISPLAY;
+			displayMessage.val = greenMask;
+
+			xStatus = xQueueSendToBack( xDisplayQueue, &displayMessage, 0);
+			if (xStatus != pdPASS) {
+				//todo: add an assert or wait
+			}
+
+		}
+
+
+    osDelay(10);
   }
   /* USER CODE END StartDefaultTask */
 }

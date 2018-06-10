@@ -1,6 +1,6 @@
-display.c:109:15:getDigitFromInt	0	static
-display.c:128:15:getDigitMask	0	static
-display.c:40:6:updateCharacterDisplay	24	static
-display.c:170:6:updateRgDisplay	16	static
-display.c:303:6:updateStatusDisplay	16	static
-display.c:22:6:StartDisplayTask	8	static
+display.c:137:15:getDigitFromInt	0	static
+display.c:156:15:getDigitMask	0	static
+display.c:68:6:updateCharacterDisplay	24	static
+display.c:198:6:updateRgDisplay	16	static
+display.c:340:6:updateStatusDisplay	16	static
+display.c:23:6:StartDisplayTask	32	static

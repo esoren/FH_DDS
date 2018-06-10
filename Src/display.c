@@ -18,22 +18,50 @@
 8        0b11110111
 9        0b11100110
 */
+//const TickType_t xTicksToWait = pdMS_TO_TICKS( 100 );
 
 void StartDisplayTask(void const * argument)
 {
+	uint32_t status_mask = 0;
+	uint32_t digit_val = 0;
+	uint32_t red_mask = 0;
+	uint32_t green_mask = 0;
+	displayMessage_t displayMessage;
+	BaseType_t xStatus;
 
-  /* Infinite loop */
-	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);
+	for(;;) {
 
-for(;;)
-  {
-	  updateStatusDisplay(STATUS_MASK);
-	  updateRgDisplay(RED_MASK, GREEN_MASK);
-	  updateCharacterDisplay(SEGMENT_DISP);
-	  osDelay(1);
-  }
+		  //Check the queue to see if any displays are changing
+		  if( uxQueueMessagesWaiting(xDisplayQueue) > 0 ) {
+			  xStatus = xQueueReceive( xDisplayQueue, &displayMessage, 0);
+			  if( xStatus == pdPASS ) {
+
+				  switch(displayMessage.displayDestination) {
+				  case(STATUS_DISPLAY):
+					status_mask = displayMessage.val;
+				 	break;
+				  case(GREEN_DISPLAY):
+					 green_mask = displayMessage.val;
+				 	 break;
+				  case(RED_DISPLAY):
+				 	 red_mask = displayMessage.val;
+				     break;
+				  case(DIGIT_DISPLAY):
+					 digit_val = displayMessage.val;
+				 	 break;
+
+
+				 }
+
+		  	  }
+		  }
+
+		  // UPDATE and multiplex the displays
+		  updateStatusDisplay(status_mask);
+		  updateRgDisplay(red_mask, green_mask);
+		  updateCharacterDisplay(digit_val);
+		  osDelay(1);
+	}
 }
 
 
@@ -309,7 +337,7 @@ void updateRgDisplay(uint32_t red_mask, uint32_t green_mask)
 //6: 6
 //7: 0
 
-void updateStatusDisplay(unsigned int status_mask)
+void updateStatusDisplay(uint32_t status_mask)
 {
 	unsigned static char led = 0;
 	led = (led + 1) % 8;
