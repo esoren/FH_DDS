@@ -5,6 +5,7 @@
  extern "C" {
 #endif
 
+void StartDisplayTask(void const * argument);
 void updateRgDisplay(uint32_t red_mask, uint32_t green_mask);
 void updateStatusDisplay(uint32_t status_mask);
 void updateCharacterDisplay(uint32_t display_val);

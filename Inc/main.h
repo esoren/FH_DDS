@@ -60,6 +60,18 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define BUTTON1_Pin GPIO_PIN_2
+#define BUTTON1_GPIO_Port GPIOE
+#define BUTTON2_Pin GPIO_PIN_3
+#define BUTTON2_GPIO_Port GPIOE
+#define BUTTON3_Pin GPIO_PIN_4
+#define BUTTON3_GPIO_Port GPIOE
+#define BUTTON4_Pin GPIO_PIN_5
+#define BUTTON4_GPIO_Port GPIOE
+#define BUTTON6_Pin GPIO_PIN_6
+#define BUTTON6_GPIO_Port GPIOE
+#define BUTTON5_Pin GPIO_PIN_2
+#define BUTTON5_GPIO_Port GPIOA
 #define DDS_CLK_Pin GPIO_PIN_8
 #define DDS_CLK_GPIO_Port GPIOA
 #define DDS_RESET_Pin GPIO_PIN_15

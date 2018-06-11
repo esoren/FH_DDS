@@ -8,6 +8,8 @@
 #ifndef BUTTONS_H_
 #define BUTTONS_H_
 
+#define NUM_BUTTONS 6
+
 void StartButtonTask(void const * argument);
 
 typedef enum {
@@ -20,16 +22,23 @@ typedef enum {
 } EButtonName;
 
 typedef enum {
-	BUTTON_PRESS=1,
+	BUTTON_PRESS=1, //todo: rethink these names..
 	BUTTON_RELEASE,
 	BUTTON_HOLD
 } EButtonEvent;
 
 
+typedef enum {
+	BUTTON_RELEASED=1,
+	BUTTON_DEBOUNCE,
+	BUTTON_HELD
+} EButtonState;
+
 typedef struct {
 	EButtonName buttonName;
 	EButtonEvent buttonEvent;
 } buttonMessage_t;
+
 
 
 

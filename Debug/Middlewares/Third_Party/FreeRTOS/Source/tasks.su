@@ -1,6 +1,6 @@
 tasks.c:3635:13:prvResetNextTaskUnblockTime	0	static
 tasks.c:4692:13:prvAddCurrentTaskToDelayedList	24	static
-tasks.c:3007:6:vTaskSetTimeOutState.part.5	0	static
+tasks.c:3007:6:vTaskSetTimeOutState.part.6	0	static
 tasks.c:1656:20:prvTaskIsTaskSuspended	8	static
 tasks.c:676:13:xTaskCreate	40	static
 tasks.c:1048:7:vTaskDelete	16	static
@@ -16,7 +16,7 @@ tasks.c:2127:12:xTaskGetTickCount	0	static
 tasks.c:2142:12:xTaskGetTickCountFromISR	8	static
 tasks.c:2173:13:uxTaskGetNumberOfTasks	0	static
 tasks.c:2181:7:pcTaskGetName	0	static
-tasks.c:2499:12:xTaskIncrementTick	40	static
+tasks.c:2499:12:xTaskIncrementTick	32	static
 tasks.c:2017:12:xTaskResumeAll	32	static
 tasks.c:1224:7:vTaskDelay	8	static
 tasks.c:3131:8:prvIdleTask	8	static
