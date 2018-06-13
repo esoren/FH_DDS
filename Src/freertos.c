@@ -56,6 +56,7 @@
 #include "display.h"
 #include "buttons.h"
 #include "dds.h"
+#include "ham.h"
 /* USER CODE END Includes */
 
 /* Variables -----------------------------------------------------------------*/
@@ -124,46 +125,63 @@ void StartDefaultTask(void const * argument)
   /* USER CODE BEGIN StartDefaultTask */
 	uint32_t count = 0;
 	uint32_t displayVal = 0;
-	uint32_t greenMask = 0;
-	uint32_t redMask = 0;
 
-	uint32_t freq = 14060000;
-	uint32_t oldFreq = 14060000;
+
+
 
 	displayMessage_t displayMessage;
 	buttonMessage_t buttonMessage;
 
 	BaseType_t xStatus;
 
-	uint8_t fup_hold = 0;
-	uint8_t fdown_hold = 0;
+	uint8_t fUpHold = 0;
+	uint8_t fDownHold = 0;
 
-	/* Infinite loop */
+	uint8_t bandNum = 4;
+	uint8_t classType = CLASS_EXTRA;
 
+	uint32_t freq = get_default_freq(bandNum);
+	uint32_t oldFreq = freq;
 	setVFO(freq);
+
 	displayVal = freq / 100;
 	displayMessage.displayDestination = DIGIT_DISPLAY;
 	displayMessage.val = displayVal;
-
 	xStatus = xQueueSendToBack(xDisplayQueue, &displayMessage, 0);
 
 	if (xStatus != pdPASS) {
 		//todo: add an assert or wait
 	}
-	osDelay(100);
 
 	for (;;) {
 		count++;
 
-		if (fup_hold == 1)
+		if (fUpHold == 1)
 			freq += 1000;
 
-		if (fdown_hold == 1)
+		if (fDownHold == 1)
 			freq -= 1000;
 
 		if (uxQueueMessagesWaiting(xButtonQueue) > 0) {
 			xStatus = xQueueReceive(xButtonQueue, &buttonMessage, 0);
 			if (xStatus == pdPASS) {
+
+				//BAND UP BUTTON
+				if (buttonMessage.buttonName == BUTTON1) {
+					if (buttonMessage.buttonEvent == BUTTON_PRESS) {
+						bandNum = next_band(bandNum, classType);
+						freq = get_default_freq(bandNum);
+					}
+				}
+
+				//BAND UP BUTTON
+				if (buttonMessage.buttonName == BUTTON2) {
+					if (buttonMessage.buttonEvent == BUTTON_PRESS) {
+						bandNum = previous_band(bandNum, classType);
+						freq = get_default_freq(bandNum);
+					}
+				}
+
 
 				//FREQ UP BUTTON
 				if (buttonMessage.buttonName == BUTTON4) {
@@ -171,9 +189,9 @@ void StartDefaultTask(void const * argument)
 					if (buttonMessage.buttonEvent == BUTTON_PRESS)
 						freq += 100;
 					if (buttonMessage.buttonEvent == BUTTON_HOLD)
-						fup_hold = 1;
+						fUpHold = 1;
 					if (buttonMessage.buttonEvent == BUTTON_RELEASE)
-						fup_hold = 0;
+						fUpHold = 0;
 				}
 
 
@@ -183,20 +201,20 @@ void StartDefaultTask(void const * argument)
 					if (buttonMessage.buttonEvent == BUTTON_PRESS)
 						freq -= 100;
 					if (buttonMessage.buttonEvent == BUTTON_HOLD)
-						fdown_hold = 1;
+						fDownHold = 1;
 					if (buttonMessage.buttonEvent == BUTTON_RELEASE)
-						fdown_hold = 0;
+						fDownHold = 0;
 
 				}
-			} else {
-				greenMask = count + 1;
-
 			}
 
 		}
 
 
 		if (freq != oldFreq) {
+
+			freq = check_freq_range(freq, bandNum, classType); //make sure the freq is a valid HAM frequency
+
 			oldFreq = freq;
 			setVFO(freq);
 			displayVal = freq / 100;
@@ -210,7 +228,7 @@ void StartDefaultTask(void const * argument)
 
 		}
 
-		osDelay(100);
+		osDelay(50);
 	}
 }
 

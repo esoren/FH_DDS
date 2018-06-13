@@ -9,7 +9,7 @@
 #include "cmsis_os.h"
 #include "dds.h"
 
-#define DDS_CLK 100000000
+#define DDS_CLK 100000000.0f
 
 //DDS_CLK = PA8
 //DDS_FQ_UD = PB5
@@ -24,7 +24,6 @@ void resetDDS() {
 
 void setVFO(uint32_t freq) {
 	uint32_t config = 0;
-	float bitfreq = 0;
 
 	//set pointer to bit 0
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
@@ -32,9 +31,7 @@ void setVFO(uint32_t freq) {
 	asm("NOP");
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
 
-	bitfreq = 4393432703/DDS_CLK;   //4294967296 TODO: this should be based on a calibration routine
-
-
+	float bitfreq = 4294967296.0f/DDS_CLK;   //TODO: add calibration
 	bitfreq *= freq;
 	config = (uint32_t)bitfreq;
 
