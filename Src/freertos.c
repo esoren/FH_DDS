@@ -174,7 +174,7 @@ void StartDefaultTask(void const * argument)
 					}
 				}
 
-				//BAND UP BUTTON
+				//BAND DOWN BUTTON
 				if (buttonMessage.buttonName == BUTTON2) {
 					if (buttonMessage.buttonEvent == BUTTON_PRESS) {
 						bandNum = previous_band(bandNum, classType);
@@ -204,6 +204,28 @@ void StartDefaultTask(void const * argument)
 						fDownHold = 1;
 					if (buttonMessage.buttonEvent == BUTTON_RELEASE)
 						fDownHold = 0;
+
+				}
+
+				//FREQ SWEEP BUTTON
+				if (buttonMessage.buttonName == BUTTON5) {
+
+					//start a sweep sequence
+					if (buttonMessage.buttonEvent == BUTTON_HOLD) {
+						uint32_t swp_start_freq = 1000000;
+						uint32_t swp_stop_freq  = 30000000;
+						uint32_t swp_steps = 100;
+						uint32_t swp_duration = 500; //ms
+						uint32_t swp_current_freq = swp_start_freq;
+
+						HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_SET); //used to trigger the scope
+						for(uint32_t step = 0; step < swp_steps; step++) {
+							swp_current_freq = swp_start_freq + (swp_stop_freq-swp_start_freq)/swp_steps*step;
+							setVFO(swp_current_freq);
+						}
+						HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET);
+
+					}
 
 				}
 			}
